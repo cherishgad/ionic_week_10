@@ -31,24 +31,35 @@ export class WeatherPage {
               public weatherService:WeatherServiceProvider,
               public loadingCtrl: LoadingController,
               public geolocation:Geolocation){
-    geolocation.getCurrentPosition().then(pos => {
-        console.log('lat: ' + pos.coords.latitude
-              + ', lon: ' + pos.coords.longitude);
-        this.currentLoc.lat = pos.coords.latitude;
-        this.currentLoc.lon = pos.coords.longitude;
-        this.currentLoc.timestamp = pos.timestamp;      
-    });
-    let loader = this.loadingCtrl.create({ 
-      content: "Loading weather data...", duration: 3000 
-    }); 
-    this.weatherService.getWeather().then(theResult => { 
+    geolocation.getCurrentPosition().then(pos => { 
+      console.log('lat: ' + pos.coords.latitude + ', lon: ' 
+      + pos.coords.longitude); 
+      this.currentLoc.lat = pos.coords.latitude; 
+      this.currentLoc.lon = pos.coords.longitude; 
+      this.currentLoc.timestamp = pos.timestamp; 
+      return this.currentLoc; 
+    }).then(currentLoc => { 
+      weatherService.getWeather(currentLoc).then(theResult => { 
         this.theWeather = theResult; 
         this.currentData = this.theWeather.currently; 
         this.day1 = this.theWeather.daily.data[0]; 
         this.day2 = this.theWeather.daily.data[1]; 
         this.day3 = this.theWeather.daily.data[2]; 
-      });
-      loader.present();
+        loader.dismiss(); 
+      }); 
+    });
+    let loader = this.loadingCtrl.create({ 
+      content: "Loading weather data...", duration: 3000 
+    });
+    loader.present();
+    /*this.weatherService.getWeather().then(theResult => { 
+        this.theWeather = theResult; 
+        this.currentData = this.theWeather.currently; 
+        this.day1 = this.theWeather.daily.data[0]; 
+        this.day2 = this.theWeather.daily.data[1]; 
+        this.day3 = this.theWeather.daily.data[2]; 
+      });*/
+      
   }
   ionViewDidLoad() {
     console.log('ionViewDidLoad WeatherPage');
