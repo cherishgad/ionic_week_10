@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController} from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, Events} from 'ionic-angular';
 import { CurrentLoc } from '../../app/interfaces/current-loc';
 import { WeatherLocation } from '../../app/interfaces/weather-location';
 import { WeatherPage } from '../../pages/weather/weather';
@@ -23,7 +23,8 @@ export class LocationsPage {
     public navParams: NavParams, 
     public locationsService: LocationsServiceProvider,
     public geocodeService: GeocodeServiceProvider,
-    public alertCtrl: AlertController) { 
+    public alertCtrl: AlertController,
+    public events: Events) { 
     locationsService.getLocations().then(res => { this.locs = res; }); 
   }
 
@@ -31,7 +32,8 @@ export class LocationsPage {
     console.log('ionViewDidLoad LocationsPage');
   }
   deleteLocation(loc:WeatherLocation) { 
-    this.locationsService.removeLocation(loc); 
+    this.locationsService.removeLocation(loc);
+    this.events.publish('locations:updated', {});
   }
   addLocation() { 
     let prompt = this.alertCtrl.create({ 
@@ -63,6 +65,7 @@ export class LocationsPage {
                 newLoc.loc.lon = res.location.longitude;
                 
                 this.locationsService.addLocation(newLoc);
+                this.events.publish('locations:updated', {});                
             });
             } 
           } 

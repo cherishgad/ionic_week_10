@@ -1,11 +1,12 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform } from 'ionic-angular';
+import { Nav, Platform, Events } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { WeatherPage } from '../pages/weather/weather'; 
 import { LocationsPage } from '../pages/locations/locations'
 import { CurrentLoc } from '../app/interfaces/current-loc';
+import { LocationsServiceProvider } from '../providers/locations-service/locations-service';
 
 @Component({
   templateUrl: 'app.html'
@@ -17,10 +18,16 @@ export class MyApp {
 
   pages: Array<{title: string, component: any, icon: string, loc?:CurrentLoc}>;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
+  constructor(public platform: Platform, 
+    public locationsService: LocationsServiceProvider ,public events: Events,
+    public statusBar: StatusBar, public splashScreen: SplashScreen
+    ) {
  
     this.initializeApp();
-
+    this.getMyLocations();
+    events.subscribe('locations:updated', (data) => { 
+      this.getMyLocations(); 
+    });
     // used for an example of ngFor and navigation
     this.pages = [ 
       { title: 'Edit Locations', component: LocationsPage, icon: 'create' }, 
@@ -39,6 +46,18 @@ export class MyApp {
       this.splashScreen.hide();
     });
   }
+  getMyLocations(){ 
+    this.locationsService.getLocations().then(res => { 
+      this.pages = [
+         { title: 'Edit Locations', component: LocationsPage, icon: 'create' }, 
+         { title: 'Current Location', component: WeatherPage, icon: 'pin' } ]; 
+         for (let newLoc of res) { 
+           this.pages.push(newLoc); 
+          } 
+        });
+  }
+
+
 
   openPage(page) {
     // Reset the content nav to have just this page
