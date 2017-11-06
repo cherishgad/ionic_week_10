@@ -9,7 +9,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { WeatherServiceProvider } from '../providers/weather-service/weather-service';
 import { GeocodeServiceProvider } from '../providers/geocode-service/geocode-service';
-
+import {Geolocation} from '@ionic-native/geolocation'
 @NgModule({
   declarations: [
     MyApp,
@@ -30,6 +30,7 @@ import { GeocodeServiceProvider } from '../providers/geocode-service/geocode-ser
   providers: [
     StatusBar,
     SplashScreen,
+    Geolocation,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     WeatherServiceProvider,
     GeocodeServiceProvider]
