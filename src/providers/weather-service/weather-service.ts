@@ -30,8 +30,8 @@ export class WeatherServiceProvider{
     }); 
   }
   getWeather(currentLoc:CurrentLoc) { 
-    this.data = null;
-    return this.load(currentLoc).then(data => { 
+      this.data = null;
+      return this.load(currentLoc).then(data => { 
       return data; 
     }); 
   }  
