@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-
+import { CurrentLoc } from '../../app/interfaces/current-loc';
+import { WeatherLocation } from '../../app/interfaces/weather-location';
 /**
  * Generated class for the LocationsPage page.
  *
@@ -14,12 +15,13 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   templateUrl: 'locations.html',
 })
 export class LocationsPage {
-
+  locs: Array<WeatherLocation>;
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad LocationsPage');
   }
-
+  deleteLocation(loc) { console.log('deleteLocation'); }
+  addLocation() { console.log('addLocation'); }
 }

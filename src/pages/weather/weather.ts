@@ -17,6 +17,7 @@ import { CurrentLoc } from '../../app/interfaces/current-loc';
   templateUrl: 'weather.html',
 })
 export class WeatherPage {
+  pageTitle:string = 'Current Location';
   theWeather: any = {}; 
   currentData: any = {}; 
   day1: any = {}; 
@@ -64,16 +65,23 @@ export class WeatherPage {
         this.day2 = this.theWeather.daily.data[1];
         this.day3 = this.theWeather.daily.data[2];
         loader.dismiss();
-      }); 
+      });
+      this.pageTitle = this.navParams.get('title'); 
     } 
   }
   ionViewDidLoad() {
     console.log('ionViewDidLoad WeatherPage');
   }
   doRefresh(refresher){ 
-    setTimeout(() => { 
-      refresher.complete(); 
-    }, 2000); 
+    this.weatherService.getWeather(this.currentLoc)
+    .then(theResult => {
+      this.theWeather = theResult;
+      this.currentData = this.theWeather.currently;
+      this.day1 = this.theWeather.daily.data[0];
+      this.day2 = this.theWeather.daily.data[1];
+      this.day3 = this.theWeather.daily.data[2];
+      refresher.complete();
+    });
   }
 
 }
