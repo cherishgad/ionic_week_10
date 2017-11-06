@@ -25,7 +25,10 @@ export class LocationsPage {
     public geocodeService: GeocodeServiceProvider,
     public alertCtrl: AlertController,
     public events: Events) { 
-    locationsService.getLocations().then(res => { this.locs = res; }); 
+      locationsService.locations$ 
+      .subscribe( ( locs: Array<WeatherLocation> ) => 
+      { this.locs = locs; 
+    }); 
   }
 
   ionViewDidLoad() {

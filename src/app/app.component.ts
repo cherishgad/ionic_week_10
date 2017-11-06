@@ -7,7 +7,7 @@ import { WeatherPage } from '../pages/weather/weather';
 import { LocationsPage } from '../pages/locations/locations'
 import { CurrentLoc } from '../app/interfaces/current-loc';
 import { LocationsServiceProvider } from '../providers/locations-service/locations-service';
-
+import { WeatherLocation } from '../app/interfaces/weather-location';
 @Component({
   templateUrl: 'app.html'
 })
@@ -47,11 +47,12 @@ export class MyApp {
     });
   }
   getMyLocations(){ 
-    this.locationsService.getLocations().then(res => { 
+    this.locationsService.locations$.subscribe( 
+      ( locs: Array<WeatherLocation> ) =>  { 
       this.pages = [
          { title: 'Edit Locations', component: LocationsPage, icon: 'create' }, 
          { title: 'Current Location', component: WeatherPage, icon: 'pin' } ]; 
-         for (let newLoc of res) { 
+         for (let newLoc of locs) { 
            this.pages.push(newLoc); 
           } 
         });
