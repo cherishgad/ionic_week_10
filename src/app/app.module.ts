@@ -11,11 +11,13 @@ import { WeatherServiceProvider } from '../providers/weather-service/weather-ser
 import { GeocodeServiceProvider } from '../providers/geocode-service/geocode-service';
 import {Geolocation} from '@ionic-native/geolocation'
 import { LocationsServiceProvider } from '../providers/locations-service/locations-service';
+import { WeathericonPipe } from '../pipes/weathericon/weathericon';
 @NgModule({
   declarations: [
     MyApp,
     WeatherPage,
-    LocationsPage
+    LocationsPage,
+    WeathericonPipe
   ],
   imports: [
     BrowserModule,
